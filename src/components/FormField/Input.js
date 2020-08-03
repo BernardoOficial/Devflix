@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-const Input = styled.input `
+const Input = styled.input`
     color: var(--black);
     border: 1px solid var(--white);
     box-sizing: border-box;
@@ -20,4 +20,4 @@ const Input = styled.input `
   }
 `;
 
-export default Input; 
+export default Input;

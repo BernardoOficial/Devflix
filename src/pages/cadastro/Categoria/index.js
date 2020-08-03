@@ -1,93 +1,131 @@
-import React, { useState } from 'react';
-import PageDefault from '../../../components/PageDefault'
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import FormFiels from '../../../components/FormField'
+import PageDefault from '../../../components/PageDefault';
+import FormField from '../../../components/FormField';
+import Button from '../../../components/Button';
 
 function CadastroCategoria() {
-  
   const valoresIniciais = {
     nome: '',
     descricao: '',
     cor: '',
-  }
-  
-  const [values, setValues] = useState(valoresIniciais);
+  };
+
   const [categorias, setCategorias] = useState([]);
+  const [values, setValues] = useState(valoresIniciais);
 
   function setValue(chave, valor) {
-
     // chave: nome, descricao e cor
     setValues({
       ...values,
       [chave]: valor,
-    })
+    });
   }
 
   function escutarInput(event) {
-    const { name, value } = event.target;
     setValue(
-      name, 
-      value
-    )
+      event.target.getAttribute('name'),
+      event.target.value,
+    );
   }
 
-    return (
-      <PageDefault>
-      <h1>Cadastro de Categoria: {values.nome}</h1>
+  useEffect(() => {
+    const URL_TOP = window.location.hostname.includes('localhost')
+      ? 'http://localhost:8080/categorias'
+      : 'https://devbernardoflix.herokuapp.com/categorias';
+    fetch(URL_TOP)
+      .then(async (respostaDoServidor) => {
+        const resposta = await respostaDoServidor.json();
+        setCategorias([
+          ...resposta,
+        ]);
+      });
 
-      <form onSubmit={ function escutarSubmit(event) {
+    // setTimeout(() => {
+    //   setCategorias([
+    //     ...categorias,
+    //     {
+    //       id: 1,
+    //       nome: 'Front-End',
+    //       descricao: 'Uma categoria foda',
+    //       cor: '#cbd1ff',
+    //     },
+    //     {
+    //       id: 2,
+    //       nome: 'Back-End',
+    //       descricao: 'Outra categoria foda',
+    //       cor: '#cbd1ff',
+    //     },
+    //   ]);
+    // }, 4 * 1000);
+  }, []);
+
+  return (
+    <PageDefault>
+      <h1>
+        Cadastro de Categoria:
+        {values.nome}
+      </h1>
+
+      <form onSubmit={function escutarSubmit(event) {
         event.preventDefault();
         setCategorias([
           ...categorias,
-          values.nome
-        ])
-        setValues(valoresIniciais)
-      }}>
+          values,
+        ]);
+        setValues(valoresIniciais);
+      }}
+      >
 
-      <FormFiels 
-        label='Nome da Categoria'
-        type="text"
-        name="nome"
-        value={values.nome}
-        onChange={escutarInput}
-      />
+        <FormField
+          label="Nome da Categoria"
+          type="text"
+          name="nome"
+          value={values.nome}
+          onChange={escutarInput}
+        />
 
-      <FormFiels 
-        label='Descrição'
-        type="text"
-        name="descricao"
-        value={values.descricao}
-        onChange={escutarInput}
-      />
+        <FormField
+          label="Descrição"
+          type="textarea"
+          name="descricao"
+          value={values.descricao}
+          onChange={escutarInput}
+        />
 
-      <FormFiels 
-        label='Cor'
-        type="color"
-        name="cor"
-        value={values.cor}
-        onChange={escutarInput}
-      />
+        <FormField
+          label="Cor"
+          type="color"
+          name="cor"
+          value={values.cor}
+          onChange={escutarInput}
+        />
 
-        <button>
+        <Button>
           Cadastrar
-        </button>
+        </Button>
       </form>
 
+      {categorias.length === 0 && (
+        <div>
+          {/* Cargando */}
+          Loading...
+        </div>
+      )}
+
       <ul>
-        {categorias.map((categoria, indice) => {
-          return (
-            <li key={`${categoria}${indice}`}>
-              {categoria}
-            </li>
-          )
-        })}
+        {categorias.map((categoria) => (
+          <li key={`${categoria.nome}`}>
+            {categoria}
+          </li>
+        ))}
       </ul>
 
       <Link to="/">
         Ir para home
       </Link>
     </PageDefault>
-    )
-  }
+  );
+}
 
 export default CadastroCategoria;
