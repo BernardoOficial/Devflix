@@ -27,24 +27,6 @@ function CadastroCategoria() {
           ...resposta,
         ]);
       });
-
-    // setTimeout(() => {
-    //   setCategorias([
-    //     ...categorias,
-    //     {
-    //       id: 1,
-    //       nome: 'Front-End',
-    //       descricao: 'Uma categoria foda',
-    //       cor: '#cbd1ff',
-    //     },
-    //     {
-    //       id: 2,
-    //       nome: 'Back-End',
-    //       descricao: 'Outra categoria foda',
-    //       cor: '#cbd1ff',
-    //     },
-    //   ]);
-    // }, 4 * 1000);
   }, []);
 
   return (
@@ -88,7 +70,7 @@ function CadastroCategoria() {
           onChange={escutarInput}
         />
 
-        <Button>
+        <Button type="submit">
           Cadastrar
         </Button>
       </form>

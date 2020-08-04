@@ -50,25 +50,25 @@ function CadastroVideo() {
           label="Título do Vídeo"
           name="titulo"
           value={values.titulo}
-          onChanger={escutarInput}
+          onChange={escutarInput}
         />
 
         <FormField
           label="URL"
           name="url"
           value={values.url}
-          onChanger={escutarInput}
+          onChange={escutarInput}
         />
 
         <FormField
           label="Categoria"
           name="categoria"
           value={values.categoria}
-          onChanger={escutarInput}
+          onChange={escutarInput}
           suggestions={categoryTitles}
         />
 
-        <Button type="submit">
+        <Button>
           Cadastrar
         </Button>
       </form>
